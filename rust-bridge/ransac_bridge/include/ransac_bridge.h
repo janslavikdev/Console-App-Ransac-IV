@@ -2,9 +2,10 @@
 #include <memory>
 #include <string>
 #include "../../../StaticLibrary/include/Table.h"
+#include "../../../StaticLibrary/include/RANSACFitResult.h"
 
-using Table = ConsoleAppRansacIINamespace::Core::Table;
+using RansacFitResultDTO = ::ConsoleAppRansacIINamespace::RustInterface::RansacFitResultDTO;
 
-std::unique_ptr<Table> table_from_csv(const std::string& path);
+std::unique_ptr<RansacFitResultDTO> initialize_from_csv(const std::string& path);
 
-double run_ransac(Table& table, double treshold); 
+//double run_ransac(Table& table, double treshold); 
