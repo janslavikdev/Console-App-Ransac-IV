@@ -29,9 +29,9 @@ namespace RustInterface {
  * @class RansacFitResult
  * 
  */
-class RansacFitResultPOD {
+class RansacFitResultDTO {
 public:
-    RansacFitResultPOD(TableFacade&& tableFacade, LinearModel linearModel)
+    RansacFitResultDTO(TableFacade&& tableFacade, LinearModel linearModel)
     :  
     tableFacade_(std::move(tableFacade)),
     linearModel_(linearModel)
@@ -53,7 +53,7 @@ private:
     TableFacade tableFacade_;
 
     LinearModel linearModel_;
-}
+};
 
 } // namespace RustInterface
 } // namespace ConsoleAppRansacIINamespace
