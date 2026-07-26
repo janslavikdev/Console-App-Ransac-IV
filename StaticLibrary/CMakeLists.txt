@@ -18,6 +18,7 @@ set(LIBRARY_HEADERS
     include/ILinearModelFitStrategy.h
     include/LeastSquaresFitStrategy.h
     include/LinearModel.h
+    include/RANSACFitResult.h
     include/RANSACFitStrategy.h
     include/Table.h
     include/TableBuilder.h
