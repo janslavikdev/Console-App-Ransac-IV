@@ -15,33 +15,31 @@ using Column = ::ConsoleAppRansacIINamespace::Core::Column;
 using LinearModel = ::ConsoleAppRansacIINamespace::Core::LinearModel;
 using RANSACFitStrategy = ::ConsoleAppRansacIINamespace::Fitting::RANSACFitStrategy;
 
-std::unique_ptr<RansacFitResultDTO> initialize_from_csv(const std::string& path)
+std::unique_ptr<AppState> create_app_state()
 {
-    //auto builder = std::make_unique<ConsoleAppRansacIINamespace::IO::CsvTableBuilder>(path, 1);
-    //builder->buildTable();
-    //Table tableFromCsv { builder->getTable() };
-    // constexpr char tableName[] = "Initial result";
-    // TableFacade facade(tableName, builder.get());
+    return std::make_unique<AppState>();
+}
 
-
+std::unique_ptr<RansacFitResultDTO> initialize_from_csv(AppState& state, const std::string& path)
+{
     std::cout << "Building Table from the File" << std::endl;
     constexpr std::size_t HEADER_LINES_COUNT {1};
 	std::unique_ptr<ITableBuilder> tableBuilder = std::make_unique<CsvTableBuilder>(path, HEADER_LINES_COUNT);
 	constexpr char tableName[] = "Test Table";
-	TableFacade tableFacade{ tableName, tableBuilder };
+    state.tableFacade = std::make_shared<TableFacade>(tableName, tableBuilder);
 
-    Column abcissa = tableFacade.getColumn(0);
-	Column ordinate = tableFacade.getColumn(1);
+    Column abcissa = state.tableFacade->getColumn(0);
+	Column ordinate = state.tableFacade->getColumn(1);
 	std::vector<double> abcissaValues = abcissa.getAllRows();
     
     // RANSAC Fit
 	cout << "Performing RANSAC Fit" << endl;
 	RANSACFitStrategy ransacFitStrategy;
-	LinearModel ransacLinearFit;
-	ransacLinearFit = ransacFitStrategy.fitLinearModel(abcissa, ordinate);
+    state.model = ransacFitStrategy.fitLinearModel(abcissa, ordinate);
 
     // Create result and turn it back
-    auto ransacResult = std::make_unique<RansacFitResultDTO>(std::move(tableFacade), std::move(ransacLinearFit));
+    auto ransacResult = std::make_unique<RansacFitResultDTO>(
+        state.tableFacade, std::move(state.model));
     
     return std::move(ransacResult);
 }

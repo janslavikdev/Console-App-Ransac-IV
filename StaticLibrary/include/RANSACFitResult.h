@@ -31,18 +31,18 @@ namespace RustInterface {
  */
 class RansacFitResultDTO {
 public:
-    RansacFitResultDTO(TableFacade&& tableFacade, LinearModel linearModel)
+    RansacFitResultDTO(std::shared_ptr<TableFacade> tableFacade, LinearModel linearModel)
     :  
     tableFacade_(std::move(tableFacade)),
     linearModel_(linearModel)
     { }
 
     std::vector<double> getInputDataAbcissa(){
-        return tableFacade_.getColumn(0).getAllRows();
+        return tableFacade_->getColumn(0).getAllRows();
     }
 
     std::vector<double> getInputDataOrdinate(){
-        return tableFacade_.getColumn(1).getAllRows();
+        return tableFacade_->getColumn(1).getAllRows();
     }
 
     LinearModel getLinearModel(){
@@ -50,7 +50,7 @@ public:
     }
     
 private:
-    TableFacade tableFacade_;
+    std::shared_ptr<TableFacade> tableFacade_;
 
     LinearModel linearModel_;
 };
